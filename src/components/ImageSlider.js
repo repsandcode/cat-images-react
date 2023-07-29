@@ -1,27 +1,11 @@
-import React, { useRef } from "react";
-import { SliderData } from "./SliderData";
-// import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./ImageSlider.css"; // import custom css
 
-const ImageSlider = ({ slides }) => {
-  // const [current, setCurrent] = useState(0);
-  // const length = slides.length;
-
-  // const nextSlide = () => {
-  //   setCurrent(current === length - 1 ? 0 : current + 1);
-  // };
-
-  // const prevSlide = () => {
-  //   setCurrent(current === 0 ? length - 1 : current - 1);
-  // };
-
-  // if (!Array.isArray(slides) || slides.length <= 0) {
-  //   return null;
-  // }
-
+const ImageSlider = () => {
   /* SLIDER CLICK */
   const sliderRef = useRef(null);
 
@@ -36,23 +20,58 @@ const ImageSlider = ({ slides }) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+    // swipeToSlide: true,
+    beforeChange: function (currentSlide, nextSlide) {
+      console.log("before change", currentSlide, nextSlide);
+    },
+    afterChange: function (currentSlide) {
+      console.log("after change", currentSlide);
+    },
+  };
+
+  // url with the limit parameter
+  const url = "https://api.thecatapi.com/v1/images/search";
+  // my catapi key
+  const api_key =
+    "api_key=live_kaZ9qcSlxURYaQ9VS8rj2PmswMbyEGC1Jms5Rj1RrWXe3TPevS6hbirpwvukRgbb";
+
+  const [catImages, setCatImages] = useState([]);
+
+  useEffect(() => {
+    fetchCatImages();
+  }, []);
+
+  const fetchCatImages = async () => {
+    try {
+      const response = await axios.get(url, {
+        params: {
+          limit: 10, // Fetch 10 images
+        },
+        headers: {
+          "x-api-key": api_key,
+        },
+      });
+      console.log(response.data);
+      setCatImages(response.data);
+    } catch (error) {
+      console.error("Error fetching cat images:", error);
+    }
   };
 
   return (
     <div className="container">
       <section className="slider">
-        {/* <FaArrowAltCircleLeft className="left-arrow" onClick={prevSlide} />
-      <FaArrowAltCircleRight className="right-arrow" onClick={nextSlide} /> */}
-
         <Slider ref={sliderRef} {...settings}>
-          {SliderData.map((slide, index) => {
+          {catImages.map((image) => {
             return (
               <div
                 className={"slide-container"}
-                key={index}
+                key={image.id}
                 onClick={handleImageClick}
               >
-                <img src={slide.image} alt="travel" className="image" />
+                <img src={image.url} alt="travel" className="image" />
               </div>
             );
           })}

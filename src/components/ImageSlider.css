@@ -1,7 +1,4 @@
-/* SliderComponent.css */
 .container {
-  padding: 2rem;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,6 +10,7 @@
 
 .slide-container {
   position: relative;
+  margin: 2rem 0;
 }
 
 .image {

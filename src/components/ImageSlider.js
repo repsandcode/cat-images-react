@@ -17,12 +17,11 @@ const ImageSlider = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
-    // swipeToSlide: true,
+    swipeToSlide: true,
     beforeChange: function (currentSlide, nextSlide) {
       console.log("before change", currentSlide, nextSlide);
     },
@@ -71,7 +70,7 @@ const ImageSlider = () => {
                 key={image.id}
                 onClick={handleImageClick}
               >
-                <img src={image.url} alt="travel" className="image" />
+                <img src={image.url} alt="meow!" className="image" />
               </div>
             );
           })}

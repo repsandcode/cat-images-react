@@ -39,29 +39,26 @@ const ImageSlider = ({ slides }) => {
   };
 
   return (
-    <section className="slider">
-      {/* <FaArrowAltCircleLeft className="left-arrow" onClick={prevSlide} />
+    <div className="container">
+      <section className="slider">
+        {/* <FaArrowAltCircleLeft className="left-arrow" onClick={prevSlide} />
       <FaArrowAltCircleRight className="right-arrow" onClick={nextSlide} /> */}
 
-      <Slider ref={sliderRef} {...settings}>
-        {SliderData.map((slide, index) => {
-          return (
-            <div
-              className={"slide-container"}
-              key={index}
-              onClick={handleImageClick}
-            >
-              <img src={slide.image} alt="travel" className="image" />
-              <div className="dots-container">
-                <div className="dot" />
-                <div className="dot" />
-                <div className="dot" />
+        <Slider ref={sliderRef} {...settings}>
+          {SliderData.map((slide, index) => {
+            return (
+              <div
+                className={"slide-container"}
+                key={index}
+                onClick={handleImageClick}
+              >
+                <img src={slide.image} alt="travel" className="image" />
               </div>
-            </div>
-          );
-        })}
-      </Slider>
-    </section>
+            );
+          })}
+        </Slider>
+      </section>
+    </div>
   );
 };
 

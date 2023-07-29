@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { SliderData } from "./SliderData";
 // import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
 import Slider from "react-slick";

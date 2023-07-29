@@ -1,12 +1,14 @@
 /* SliderComponent.css */
 .container {
   padding: 2rem;
-  max-height: 100vh;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .slider {
   max-width: 500px;
-  margin: 0 auto;
 }
 
 .slide-container {

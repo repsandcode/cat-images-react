@@ -1,81 +1,66 @@
-import React, { useRef, useState, useEffect } from "react";
-import axios from "axios";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./ImageSlider.css"; // import custom css
+import React, { useEffect, useState } from "react";
+import "./ImageSlider.css";
+// import { useCallback } from "react";
 
 const ImageSlider = () => {
-  /* SLIDER CLICK */
-  const sliderRef = useRef(null);
-
-  const handleImageClick = () => {
-    // Move to the next slide when the image is clicked
-    sliderRef.current.slickNext();
-  };
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    vertical: true,
-    verticalSwiping: true,
-    swipeToSlide: true,
-    beforeChange: function (currentSlide, nextSlide) {
-      console.log("before change", currentSlide, nextSlide);
-    },
-    afterChange: function (currentSlide) {
-      console.log("after change", currentSlide);
-    },
-  };
-
-  // url with the limit parameter
-  const url = "https://api.thecatapi.com/v1/images/search";
-  // my catapi key
-  const api_key =
-    "api_key=live_kaZ9qcSlxURYaQ9VS8rj2PmswMbyEGC1Jms5Rj1RrWXe3TPevS6hbirpwvukRgbb";
-
   const [catImages, setCatImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchCatImages();
-  }, []);
-
-  const fetchCatImages = async () => {
+  const fetchData = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(url, {
-        params: {
-          limit: 10, // Fetch 10 images
-        },
+      const quantity = 3;
+      const api_key = `live_kaZ9qcSlxURYaQ9VS8rj2PmswMbyEGC1Jms5Rj1RrWXe3TPevS6hbirpwvukRgbb`;
+      const url = `https://api.thecatapi.com/v1/images/search?limit=${quantity}&api_key=${api_key}`;
+      const response = await fetch(url, {
         headers: {
           "x-api-key": api_key,
         },
       });
-      console.log(response.data);
-      setCatImages(response.data);
+      const data = await response.json();
+      console.log(data);
+      setCatImages((prevCatImages) => [...prevCatImages, ...data]); // Append new images to the existing images
     } catch (error) {
-      console.error("Error fetching cat images:", error);
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Function to handle scroll
+    const handleScroll = () => {
+      // Check if the user has scrolled to the bottom of the page
+      if (
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 200 &&
+        !loading
+      ) {
+        // Load more images when user is near the bottom and not already loading
+        fetchData();
+      }
+    };
+
+    // Add event listener for scroll event
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove event listener when component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading]);
+
   return (
     <div className="container">
-      <section className="slider">
-        <Slider ref={sliderRef} {...settings}>
-          {catImages.map((image) => {
-            return (
-              <div
-                className={"slide-container"}
-                key={image.id}
-                onClick={handleImageClick}
-              >
-                <img src={image.url} alt="meow!" className="image" />
-              </div>
-            );
-          })}
-        </Slider>
-      </section>
+      <div className="cat-images" id="image-slider">
+        {catImages.map((cat, index) => (
+          <img key={index} className="cat" src={cat.url} alt={`Cat ${index}`} />
+        ))}
+      </div>
     </div>
   );
 };

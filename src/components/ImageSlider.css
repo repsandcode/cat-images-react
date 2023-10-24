@@ -1,22 +1,19 @@
 .container {
+  max-width: 900px;
+  /* border: 2px solid red; */
+  margin: 0 auto;
+}
+
+.cat-images {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.slider {
+  flex-direction: column;
   max-width: 500px;
+  margin: 0 auto;
+  /* border: 2px solid blue; */
 }
 
-.slide-container {
-  position: relative;
-  margin: 2rem 0;
-}
-
-.image {
-  border-radius: 2.5rem;
+.cat {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  margin-top: 12rem;
+  border-radius: 2rem;
 }

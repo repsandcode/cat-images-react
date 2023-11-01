@@ -57,8 +57,13 @@ const ImageSlider = () => {
   return (
     <div className="container">
       <div className="cat-images" id="image-slider">
-        {catImages.map((cat, index) => (
-          <img key={index} className="cat" src={cat.url} alt={`Cat ${index}`} />
+        {catImages.map((cat) => (
+          <img
+            key={cat.id}
+            className="cat"
+            src={cat.url}
+            alt={`Cat ${index}`}
+          />
         ))}
       </div>
     </div>
